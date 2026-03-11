@@ -1,7 +1,6 @@
 const mysql = require('mysql2/promise')
 require('dotenv').config()
 
-
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -12,9 +11,12 @@ const db = mysql.createPool({
   connectionLimit: 10,
 })
 
-if(db.connect){
-    console.log("Database connected");
-    
-}
+db.getConnection()
+  .then(() =>
+    console.log('Database connected')
+  )
+  .catch(err =>
+    console.error('Database error', err)
+  )
 
-module.exports = db;
+module.exports = db
