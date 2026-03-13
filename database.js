@@ -11,6 +11,17 @@ const db = mysql.createPool({
   connectionLimit: 10,
 })
 
+
+// const db = mysql.createPool({
+//   host: process.env.HOST_LOCAL,
+//   user: process.env.USER_LOCAL,
+//   password: process.env.PASS_LOCAL,
+//   database: process.env.DB_LOCAL,
+//   waitForConnections: true,
+//   connectionLimit: 10,
+// })
+
+
 db.getConnection()
   .then(() =>
     console.log('Database connected')

@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/auth', auth)
-app.use('/api', get) // ← give it proper prefix
+app.use('/api', get) 
 
 app.listen(5000, () => {
   console.log('server running on 5000 port')
