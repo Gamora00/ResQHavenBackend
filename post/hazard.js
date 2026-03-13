@@ -9,7 +9,7 @@ exports.hazard = async (req, res)=>{
             VALUES(?,?,?,?,?,?,?)
             `,[barangay,municipality,province,latitude,longitude,level,disaster_type])
 
-        return res.status(200),json({
+        return res.status(200).json({
             success: true,
             message: "Successfully added"
         })
