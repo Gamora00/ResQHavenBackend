@@ -1,27 +1,21 @@
 const db = require('../database')
 const bcrypt = require('bcrypt')
 
-exports.users = async (req, res) => {
+exports.admins = async (req, res) => {
   try {
 
     const {
       firstname,
       lastname,
-      sex,
-      birthday,
-      phone,
       email,
       password,
-      barangay,
-      municipality, 
-      province
+      role
     } = req.body
 
+ 
     if (
       !firstname || !lastname ||
-      !phone || !email ||
-      !password || !barangay ||
-      !municipality || !province
+      !email || !password || !role
     ) {
       return res.status(400).json({
         success: false,
@@ -29,10 +23,25 @@ exports.users = async (req, res) => {
       })
     }
 
+    const validRoles = [
+      'dswd',
+      'drrmo',
+      'barangay_official'
+    ]
+
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid role! Must be dswd, drrmo, or barangay_official'
+      })
+    }
+
     const [existing] = await db.query(
-      `SELECT id FROM users WHERE email = ?`,
+      `SELECT id FROM admins 
+       WHERE email = ?`,
       [email]
     )
+
     if (existing.length > 0) {
       return res.status(400).json({
         success: false,
@@ -40,47 +49,31 @@ exports.users = async (req, res) => {
       })
     }
 
-    const hashPassword = 
+    const hashPassword =
       await bcrypt.hash(password, 10)
 
+  
     const [result] = await db.query(
-      `INSERT INTO users 
-        (firstName, lastName, phone, 
-         password, barangay, 
-         city, province, 
-         email, birthday, sex) 
-       VALUES (?,?,?,?,?,?,?,?,?,?)`,
+      `INSERT INTO admins 
+        (firstName, lastName, email, password, role) 
+       VALUES (?,?,?,?,?)`,
       [
         firstname,
         lastname,
-        phone,
-        hashPassword,
-        barangay,
-        municipality,
-        province,
         email,
-        birthday,
-        sex
+        hashPassword,
+        role
       ]
     )
 
-    console.log(result);
-    
+
     return res.status(201).json({
       success: true,
-      message: 'Registered Successfully!',
-      user:{
-        lastname,
-        firstname,
-        barangay,
-        municipality,
-        id: result.insertId
-      }
+      message: 'Admin registered successfully!',
     })
 
   } catch (error) {
-    console.log(error);
-    
+    console.log('Error:', error)
     return res.status(500).json({
       success: false,
       message: 'Server error. Please try again.',
