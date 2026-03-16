@@ -25,6 +25,8 @@ exports.getMe = async (req, res) => {
     )
 
     if (admins.length > 0) {
+      console.log(admins);
+      
       return res.status(200).json({
         success: true,
         user: {

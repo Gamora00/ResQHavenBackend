@@ -6,7 +6,8 @@ const cookieParser = require('cookie-parser')
 const auth = require('./auth/post')
 const get = require('./fetch/get')
 
-// ✅ CORS must be FIRST!
+app.set('trust proxy', 1) 
+
 app.use(cors({
   origin: [
     'http://localhost:5173',
@@ -16,12 +17,10 @@ app.use(cors({
   credentials: true
 }))
 
-// ✅ Then these after CORS
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-// Test route
 app.get('/', (req, res) => {
   res.json({
     success: true,
