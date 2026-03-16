@@ -1,13 +1,17 @@
-// backend/middleware/middleware.js
 const jwt = require('jsonwebtoken')
 
 const protect = (req, res, next) => {
   try {
-    const token = req.cookies.token
 
+    let token = req.cookies.token
 
-    console.log("Token" + token);
-    
+    // fallback to Authorization header
+    if (!token && req.headers.authorization) {
+      token = req.headers.authorization.split(" ")[1]
+    }
+
+    console.log("Token:", token)
+
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -31,5 +35,4 @@ const protect = (req, res, next) => {
   }
 }
 
-// ✅ Default export!
 module.exports = protect

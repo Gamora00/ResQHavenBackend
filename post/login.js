@@ -70,17 +70,18 @@ exports.login = async (req, res) => {
 
     // ✅ Return correct data
     return res.status(200).json({
-      success: true,
-      message: 'Login successful!',
-      user: {
-        id: account.id,
-        firstName: isAdmin
-          ? account.name
-          : account.firstName,
-        email: account.email,
-        role: isAdmin ? account.role : 'user'
-      }
-    })
+  success: true,
+  token, // add this
+  message: 'Login successful!',
+  user: {
+    id: account.id,
+    firstName: isAdmin
+      ? account.name
+      : account.firstName,
+    email: account.email,
+    role: isAdmin ? account.role : 'user'
+  }
+})
 
   } catch (error) {
     console.log(error) // ← add this to see error!
