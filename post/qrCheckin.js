@@ -32,6 +32,10 @@ exports.qrCheckin = async (req,res)=>{
       [adminId]
     )
 
+    const [updateRes] = await connection.query(`
+      UPDATE users SET status = ? WHERE id = ?
+      `, ['Evacuated', user_id])
+
     const centerId = admins[0].assigned_center_id
 
     if (admins.length === 0) {

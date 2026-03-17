@@ -79,8 +79,8 @@ exports.checkin = async (req, res) => {
       `INSERT INTO users
       (firstName, lastName, phone, password,
        barangay, city, province,
-       email, birthday, sex)
-      VALUES (?,?,?,?,?,?,?,?,?,?)`,
+       email, birthday, sex, status)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
       [
         firstname,
         lastname,
@@ -91,7 +91,8 @@ exports.checkin = async (req, res) => {
         province,
         email,
         birthday,
-        sex
+        sex,
+        'Evacuated'
       ]
     )
 

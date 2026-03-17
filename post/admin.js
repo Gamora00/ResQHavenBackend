@@ -9,7 +9,8 @@ exports.admins = async (req, res) => {
       lastname,
       email,
       password,
-      role
+      role,
+      assignedCenter
     } = req.body
 
  
@@ -55,14 +56,15 @@ exports.admins = async (req, res) => {
   
     const [result] = await db.query(
       `INSERT INTO admins 
-        (firstName, lastName, email, password, role) 
-       VALUES (?,?,?,?,?)`,
+        (firstName, lastName, email, password, role, assigned_center_id) 
+       VALUES (?,?,?,?,?, ?)`,
       [
         firstname,
         lastname,
         email,
         hashPassword,
-        role
+        role,
+        assignedCenter || 0
       ]
     )
 
